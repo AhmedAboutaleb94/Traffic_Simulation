@@ -12,7 +12,7 @@ class Vehicle;
 enum TrafficLightPhase
 {
     red,
-    green,
+    green
 };
 
 template <class T>
@@ -22,17 +22,17 @@ public:
     T receive();
     void send(T &&msg);
 private:
-    std::deque<TrafficLightPhase> _queue;
+    std::deque<T> _queue;
     std::condition_variable _cond;
     std::mutex _mtx;
     
 };
 
-class TrafficLight : public TrafficObject
+class TrafficLight : TrafficObject
 {
 public:
     // constructor / desctructor
-
+    TrafficLight();
     // getters / setters
     TrafficLightPhase getCurrentPhase();
     // typical behaviour methods
@@ -43,10 +43,11 @@ private:
     void cycleThroughPhases();
     
     /* Member Variables */
-    std::shared_ptr<MessageQueue<TrafficLightPhase>> msg_queue;
-    TrafficLightPhase _currentPhase;
     std::condition_variable _condition;
     std::mutex _mutex;
+
+    MessageQueue<TrafficLightPhase> _queue;
+    TrafficLightPhase _currentPhase;
 };
 
 #endif
